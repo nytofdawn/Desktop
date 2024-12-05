@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Scheduling Management System</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="form-container">
+            <h2>Create an Account</h2>
+            <form id="signupForm">
+                <input type="text" id="username" placeholder="Username" required><br>
+                <input type="email" id="email" placeholder="Email" required><br>
+                <input type="password" id="password" placeholder="Password" required><br>
+                <input type="password" id="confirmpassword" placeholder="Confirm Password" required><br>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="login.html">Log In</a></p>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmpassword').value;
+
+            // Validate that passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            try {
+                const response = await axios.post('http://192.168.1.108:8000/api/register/', {
+                    username: username,
+                    email: email,
+                    password: password
+                });
+
+                alert('Account created successfully!');
+                window.location.href = 'login.html';  
+            } catch (error) {
+                console.error('Signup failed:', error);
+                
+                if (error.response) {
+                    console.error("Error response:", error.response);
+                    alert('Error: ' + (error.response.data.message || 'Signup failed. Please try again.'));
+                } else if (error.request) {
+                    console.error("Error request:", error.request);
+                    alert('Network error. Please check your connection or try again later.');
+                } else {
+                    console.error("Error message:", error.message);
+                    alert('Unknown error occurred.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

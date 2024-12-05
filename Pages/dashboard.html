@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Scheduling Management System</title>
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidenav">
+        <h2>Event Scheduling System</h2>
+        <ul>
+            <li><a href="dashboard.html" id="dashboardLink">Dashboard</a></li>
+            <li><a href="events.html" id="eventsLink">Events</a></li>
+            <li><a href="profile.html" id="profileLink">Profile</a></li>
+            <li><a href="login.html" onclick="logout(event)">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Welcome to the Dashboard</h1>
+        <p>Choose a category below to explore upcoming events:</p>
+
+        <div class="category-cards">
+            <div class="category-card">
+                <div class="category-card-content">
+                    <div class="icon">
+                        <i class="fas fa-futbol"></i> <!-- Soccer ball icon -->
+                    </div>
+                    <h3>Sports</h3>
+                    <p>Exciting sports events, from local matches.</p>
+                    <button onclick="filterAndRedirect('Sports')">View Events</button>
+                </div>
+            </div>
+        
+            <div class="category-card">
+                <div class="category-card-content">
+                    <div class="icon">
+                        <i class="fas fa-trophy"></i> <!-- Trophy icon -->
+                    </div>
+                    <h3>Contest</h3>
+                    <p>Exciting contests from various competitions.</p>
+                    <button onclick="filterAndRedirect('Contest')">View Events</button>
+                </div>
+            </div>
+        
+            <div class="category-card">
+                <div class="category-card-content">
+                    <div class="icon">
+                        <i class="fas fa-briefcase"></i> 
+                    </div>
+                    <h3>Meeting</h3>
+                    <p>Business meetings, conferences, and seminars.</p>
+                    <button onclick="filterAndRedirect('Meeting')">View Events</button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            var currentPage = window.location.pathname.split('/').pop(); 
+            var links = document.querySelectorAll('.sidenav a');
+            links.forEach(function(link) {
+                if (link.href.includes(currentPage)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        function filterAndRedirect(eventType) {
+                
+                const allEvents = JSON.parse(localStorage.getItem('all_events')) || [];
+        
+                const filteredEvents = allEvents.filter(event => event.event_type === eventType);
+        
+                // Save the filtered events back to localStorage (optional)
+                localStorage.setItem('filtered_events', JSON.stringify(filteredEvents));
+        
+                // Redirect to events.html with the selected event type as a query parameter
+                window.location.href = `events.html?event_type=${eventType}`;
+            }
+            function logout(event) {
+    event.preventDefault(); // Prevent the default <a> tag behavior (navigation)
+    
+    const confirmation = confirm("Are you sure you want to log out?");
+    if (confirmation) {
+        // Remove items from localStorage
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('all_events');
+        localStorage.removeItem('filtered_events');
+        
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // User canceled logout, no action taken
+        console.log('Logout canceled');
+    }
+}
+
+    </script>
+</body>
+</html>

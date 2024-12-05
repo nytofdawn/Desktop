@@ -1,0 +1,79 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background-color: #B1F0F7; /* Light background color */
+    color: #333; /* Text color */
+}
+
+/* Sidebar */
+.sidenav {
+    width: 200px;
+    background-color: #2C3E50;
+    color: white;
+    padding: 30px 20px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 10px 10px 0;
+}
+
+.sidenav h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #ECF0F1;
+}
+
+.sidenav ul {
+    list-style: none;
+}
+
+.sidenav li {
+    margin-bottom: 20px;
+}
+
+.sidenav a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidenav a:hover, .sidenav .active {
+    background-color: #3498db; /* Active and hover effect */
+    color: white;
+}
+
+.sidenav a:active {
+    background-color: #2980b9;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    padding: 30px;
+}
+
+.main-content h1 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.main-content p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}

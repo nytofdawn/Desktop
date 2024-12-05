@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Scheduling Management System</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="form-container">
+            <h2>Log In</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email" required><br>
+                <input type="password" id="loginPassword" placeholder="Password" required><br>
+                <button type="submit">Log In</button>
+            </form>
+            <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        window.onload = function() {
+            document.getElementById('loginEmail').focus();
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await axios.post('http://192.168.1.108:8000/api/login/', {
+                    email: email,
+                    password: password
+                });
+
+                console.log(response.data);
+                if (response.status === 200) {
+                    const token = response.data.token;
+                    localStorage.setItem('auth_token', token);
+                    const useremail = response.data.email;
+                    localStorage.setItem('userEmail',useremail);
+                    alert('Login successful!');
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (error) {
+                console.error('Login failed:', error);
+                if (error.response) {
+                    const errorMessage = error.response.data.message || 'Login failed. Please check your credentials.';
+                    alert(errorMessage);
+                } else {
+                    alert('Network error. Please try again.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

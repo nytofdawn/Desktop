@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Scheduling Management System</title>
+    <link rel="stylesheet" href="../styles/profile.css">
+</head>
+<body>
+    <div class="sidenav">
+        <h2>Event Scheduling System</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="login.html" onclick="logout(event)">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Profile</h1>
+        <div class="profile-info">
+            <div class="profile-details">
+                <p><strong>USERNAME:</strong> <span id="userName">Loading...</span></p>
+                <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial values to "Loading..."
+            document.getElementById('userName').textContent = 'Loading...';
+            document.getElementById('userEmail').textContent = 'Loading...';
+
+            // Fetch data from localStorage after page load
+            var userEmail = localStorage.getItem('userEmail');
+            var userName = localStorage.getItem('userName');  // Assuming 'userName' is stored in localStorage
+
+            if (userEmail) {
+                document.getElementById('userEmail').textContent = userEmail;
+            } else {
+                document.getElementById('userEmail').textContent = 'No email available';
+            }
+
+            if (userName) {
+                document.getElementById('userName').textContent = userName;
+            } else {
+                document.getElementById('userName').textContent = 'No username available';
+            }
+        });
+
+        function logout(event) {
+            event.preventDefault(); // Prevent the default <a> tag behavior (navigation)
+            
+            const confirmation = confirm("Are you sure you want to log out?");
+            if (confirmation) {
+                // Remove items from localStorage
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('all_events');
+                localStorage.removeItem('filtered_events');
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            } else {
+                // User canceled logout, no action taken
+                console.log('Logout canceled');
+            }
+        }
+    </script>
+</body>
+</html>

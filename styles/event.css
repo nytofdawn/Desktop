@@ -1,0 +1,185 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background-color: #B1F0F7; 
+    color: #333;
+}
+
+/* Side Navigation Styles */
+.sidenav {
+    width: 200px;
+    background-color: #2C3E50; 
+    color: white;
+    padding: 30px 20px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 10px 10px 0;
+}
+
+.sidenav h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #ECF0F1;
+}
+
+.sidenav ul {
+    list-style: none;
+}
+
+.sidenav li {
+    margin-bottom: 20px;
+}
+
+.sidenav a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidenav a:hover, .sidenav .active {
+    background-color: #3498db;
+    color: white;
+}
+
+.sidenav a:active {
+    background-color: #2980b9;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    padding: 30px;
+}
+
+.main-content h1 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Events List Layout */
+.events-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+    overflow-x: hidden;
+    padding-bottom: 10px;
+}
+
+/* Event Item Styling (Cards) */
+.event-item {
+    width: 280px; /* Match the dashboard card width */
+    background-color: #07d6cc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.event-item h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.event-item p {
+    color: #666;
+    font-size: 1rem;
+    margin: 15px 0;
+}
+
+/* Event Actions Button Styling */
+.event-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.event-actions button {
+    padding: 10px 20px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.event-actions button:hover {
+    background-color: #021929;
+}
+
+/* General Button Styles */
+button {
+    padding: 12px 20px;
+    background-color: #16a085;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1abc9c;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .sidenav {
+        width: 200px;
+        padding-top: 20px;
+    }
+
+    .main-content {
+        margin-left: 200px;
+        padding: 20px;
+    }
+
+    .events-list {
+        grid-template-columns: 1fr;
+    }
+
+    .sidenav h2 {
+        font-size: 24px;
+    }
+
+    .sidenav ul li a {
+        font-size: 16px;
+    }
+
+    .event-item h3 {
+        font-size: 20px;
+    }
+
+    .event-actions button {
+        padding: 8px 12px;
+    }
+}

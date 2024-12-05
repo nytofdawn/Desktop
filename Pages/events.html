@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Scheduling Management System</title>
+    <link rel="stylesheet" href="../styles/event.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <div class="sidenav">
+        <h2>Event Scheduling System</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="login.html" onclick="logout(event)">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Upcoming Events</h1>
+        <div class="events-list" id="events-list"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentPage = window.location.pathname.split('/').pop(); 
+            var links = document.querySelectorAll('.sidenav a');
+            links.forEach(function(link) {
+                if (link.href.includes(currentPage)) {
+                    link.classList.add('active');
+                }
+            });
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventType = urlParams.get('event_type');
+            console.log('Selected event type: ', eventType);
+
+            fetchEvents(eventType);
+        }); 
+
+        function fetchEvents(eventType = '') {
+            const authToken = localStorage.getItem('auth_token');
+            if (!authToken) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let apiUrl = 'http://192.168.1.108:8000/api/events/';
+            if (eventType) {
+                apiUrl += `?event_type=${eventType}`;
+            }
+
+            console.log("API URL: ", apiUrl);
+            axios.get(apiUrl, {
+                headers: {
+                    'Authorization': `Token ${authToken}`
+                }
+            })
+            .then(function(response) {
+                console.log('API Response:', response.data);
+                const events = response.data;
+
+
+                localStorage.setItem('all_events', JSON.stringify(events)); 
+
+  
+                displayEvents(events, eventType);
+            })
+            .catch(function(error) {
+                console.error('Error fetching events:', error);
+                const eventsListContainer = document.getElementById('events-list');
+                eventsListContainer.innerHTML = '<p>Failed to load events. Please try again later.</p>';
+            });
+        }
+
+        function displayEvents(events, eventType = '') {
+    const eventsListContainer = document.getElementById('events-list');
+    eventsListContainer.innerHTML = ''; // Clear the container first
+
+    const filteredEvents = eventType ? events.filter(event => event.event_type === eventType) : events;
+
+    
+    const ongoingAndUpcomingEvents = filteredEvents.filter(event => event.status !== 'Completed');
+
+    if (ongoingAndUpcomingEvents.length === 0) {
+        eventsListContainer.innerHTML = '<p>No events available for this category.</p>';
+    } else {
+        ongoingAndUpcomingEvents.forEach(event => {
+            const eventItem = document.createElement('div');
+            eventItem.classList.add('event-item');
+
+            const startDatetime = new Date(event.start_datetime);
+            const formattedStartDatetime = startDatetime.toLocaleString();
+
+            eventItem.innerHTML = `
+                <h3>${event.title}</h3>
+                <p><strong>Date:</strong> ${formattedStartDatetime}</p>
+                <p><strong>Description:</strong> ${event.description}</p>
+                <p><strong>Location:</strong> ${event.location}</p>
+                <p><strong>Event Type:</strong> ${event.event_type}</p>
+                <p><strong>Status:</strong> ${event.status}</p>
+                <p><strong>Capacity:</strong> ${event.capacity}</p>
+                <div class="event-actions">
+                    <button onclick="viewEventDetails(${event.event_id})">Join</button>
+                </div>
+            `;
+            eventsListContainer.appendChild(eventItem);
+        });
+    }
+}
+
+        function viewEventDetails(eventId) {
+            alert('Viewing details for event ID ' + eventId);
+        }
+
+    function logout(event) {
+    event.preventDefault(); // Prevent the default <a> tag behavior (navigation)
+    
+    const confirmation = confirm("Are you sure you want to log out?");
+    if (confirmation) {
+        // Remove items from localStorage
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('all_events');
+        localStorage.removeItem('filtered_events');
+        
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // User canceled logout, no action taken
+        console.log('Logout canceled');
+    }
+}
+</script>
+
+</body>
+</html>
